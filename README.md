@@ -6,10 +6,25 @@ This is a Trello Clone App project. It was developed for learning purposes.
 
 - Next.js 14
 - Server Actions
+- Clerk for Authentication
 - Prisma
 - Tailwind
 - Stripe
 - MySQL
+
+## Project Initialization Steps
+
+Create an clark account and application in it.
+Create .env file in project directory. You need to fill variables below in that file.
+
+```bash
+  NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=${PUBLISHABLE_KEY}
+  CLERK_SECRET_KEY=${SECRET_KEY}
+  NEXT_PUBLIC_CLERK_SIGN_IN_URL=${SIGN_IN_URL}
+  NEXT_PUBLIC_CLERK_SIGN_UP_URL=${SIGN_UP_URL}
+  NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL=${AFTER_SIGN_IN_URL}
+  NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=${AFTER_SIGN_UP_URL}
+```
 
 ## Installation
 
