@@ -1,4 +1,5 @@
 import { NextPage } from 'next';
+import Navbar from './_components/navbar';
 
 interface Props {
   children: React.ReactNode;
@@ -7,6 +8,7 @@ interface Props {
 const Layout: NextPage<Props> = ({ children }) => {
   return (
     <div className="h-full bg-slate-100">
+      <Navbar />
       <main className="bg-slate-100 pb-20 pt-40">{children}</main>
     </div>
   );
