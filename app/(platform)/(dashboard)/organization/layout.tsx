@@ -1,5 +1,5 @@
 import { NextPage } from 'next';
-import Sidebar from './_components/sidebar';
+import Sidebar from '../_components/sidebar';
 
 interface Props {
   children: React.ReactNode;

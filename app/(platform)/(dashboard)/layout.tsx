@@ -1,5 +1,5 @@
 import { NextPage } from 'next';
-import Navbar from './organization/_components/navbar';
+import Navbar from './_components/navbar';
 
 interface Props {
   children: React.ReactNode;
