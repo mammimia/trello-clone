@@ -18,11 +18,16 @@ const Navbar: NextPage<Props> = ({}) => {
         </div>
         <Button
           size="sm"
+          variant="primary"
           className="hidden h-auto rounded-sm px-2 py-1.5 md:block"
         >
           Create
         </Button>
-        <Button size="sm" className="block rounded-sm md:hidden">
+        <Button
+          size="sm"
+          variant="primary"
+          className="block rounded-sm md:hidden"
+        >
           <Plus className="h-4 w-4" />
         </Button>
       </div>
