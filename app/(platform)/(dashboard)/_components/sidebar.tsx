@@ -44,7 +44,19 @@ const Sidebar: NextPage<Props> = ({ storageKey = 't-sidebar-state' }) => {
   };
 
   if (!isLoaded || !isLoadedList || userMemberships.isLoading)
-    return <Skeleton />;
+    return (
+      <>
+        <div className="mb-2 flex items-center justify-between">
+          <Skeleton className="h-10 w-[50%]" />
+          <Skeleton className="h-10 w-10" />
+        </div>
+        <div className="space-y-2">
+          <NavItem.Skeleton />
+          <NavItem.Skeleton />
+          <NavItem.Skeleton />
+        </div>
+      </>
+    );
 
   return (
     <>
