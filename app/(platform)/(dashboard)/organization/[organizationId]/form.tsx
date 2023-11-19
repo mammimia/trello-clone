@@ -4,6 +4,7 @@ import { createBoard } from '@/actions/create-board';
 import { Button } from '@/components/ui/button';
 import { NextPage } from 'next';
 import { useFormState } from 'react-dom';
+import { FormInput } from './form-input';
 
 interface Props {}
 
@@ -14,22 +15,7 @@ const Form: NextPage<Props> = ({}) => {
   return (
     <form action={dispatch}>
       <div className="flex flex-col space-y-2">
-        <input
-          id="title"
-          name="title"
-          required
-          placeholder="Enter a board title"
-          className="border border-black p-1"
-        />
-        {state?.errors?.title && (
-          <div>
-            {state.errors.title.map((error: string) => (
-              <p key={error} className="text-rose-500">
-                {error}
-              </p>
-            ))}
-          </div>
-        )}
+        <FormInput errors={state?.errors} />
       </div>
       <Button type="submit">Create</Button>
     </form>
