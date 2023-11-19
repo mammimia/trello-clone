@@ -1,9 +1,9 @@
 'use client';
 
 import { createBoard } from '@/actions/create-board';
-import { Button } from '@/components/ui/button';
 import { NextPage } from 'next';
 import { useFormState } from 'react-dom';
+import { FormButton } from './form-button';
 import { FormInput } from './form-input';
 
 interface Props {}
@@ -17,7 +17,7 @@ const Form: NextPage<Props> = ({}) => {
       <div className="flex flex-col space-y-2">
         <FormInput errors={state?.errors} />
       </div>
-      <Button type="submit">Create</Button>
+      <FormButton />
     </form>
   );
 };
