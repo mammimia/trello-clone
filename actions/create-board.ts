@@ -2,22 +2,48 @@
 
 import { db } from '@/lib/db';
 import { revalidatePath } from 'next/cache';
+import { redirect } from 'next/navigation';
 import { z } from 'zod';
 
+export type State = {
+  errors?: {
+    title?: string;
+  };
+  message?: string | null;
+};
+
 const CreateBoard = z.object({
-  title: z.string()
+  title: z
+    .string()
+    .min(3, { message: 'Title must be at least 3 characters long' })
 });
 
-export async function createBoard(formData: FormData) {
-  const { title } = CreateBoard.parse({
+export async function createBoard(prevState: State, formData: FormData) {
+  const validatedFields = CreateBoard.safeParse({
     title: formData.get('title')
   });
 
-  await db.board.create({
-    data: {
-      title
-    }
-  });
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: 'Missing or invalid fields'
+    };
+  }
+
+  const { title } = validatedFields.data;
+
+  try {
+    await db.board.create({
+      data: {
+        title
+      }
+    });
+  } catch (error) {
+    return {
+      message: 'Database error'
+    };
+  }
 
   revalidatePath('/organization/org_2YLHkdz0Yz9KDF338HjL16lLiZq'); // TODO: hard-coded
+  redirect('/organization/org_2YLHkdz0Yz9KDF338HjL16lLiZq'); // TODO: hard-coded
 }
