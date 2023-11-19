@@ -17,8 +17,6 @@ const MobileSidebar: NextPage<Props> = ({}) => {
   const toggle = useMobileSidebar((state) => state.toggle);
   const isOpen = useMobileSidebar((state) => state.isOpen);
 
-  console.log(isOpen);
-
   useEffect(() => {
     setIsMounted(true);
   }, []);
