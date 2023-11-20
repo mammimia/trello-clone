@@ -1,10 +1,11 @@
 'use server';
 
-import { auth } from '@clerk/nextjs';
-import { InputType, OutputType } from './types';
-import { revalidatePath } from 'next/cache';
 import { createSafeAction } from '@/lib/create-safe-action';
+import { db } from '@/lib/db';
+import { auth } from '@clerk/nextjs';
+import { revalidatePath } from 'next/cache';
 import { CreateBoard } from './schema';
+import { InputType, OutputType } from './types';
 
 const handler = async (data: InputType): Promise<OutputType> => {
   const { userId } = auth();
@@ -19,7 +20,7 @@ const handler = async (data: InputType): Promise<OutputType> => {
   let board;
 
   try {
-    board = await prisma.board.create({
+    board = await db.board.create({
       data: {
         title
       }
