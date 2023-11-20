@@ -1,10 +1,10 @@
 'use client';
 
-import { NextPage } from 'next';
-import { FormButton } from './form-button';
 import { createBoard } from '@/actions/create-board';
-import { useAction } from '@/hooks/use-action';
 import { FormInput } from '@/components/form/form-input';
+import { FormSubmit } from '@/components/form/form-submit';
+import { useAction } from '@/hooks/use-action';
+import { NextPage } from 'next';
 
 interface Props {}
 
@@ -29,7 +29,7 @@ const Form: NextPage<Props> = ({}) => {
       <div className="flex flex-col space-y-2">
         <FormInput id="title" label="Board Title" errors={fieldErrors} />
       </div>
-      <FormButton />
+      <FormSubmit>Save</FormSubmit>
     </form>
   );
 };
