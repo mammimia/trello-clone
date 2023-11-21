@@ -1,12 +1,18 @@
 import { ClerkProvider } from '@clerk/nextjs';
 import { NextPage } from 'next';
+import { Toaster } from 'sonner';
 
 interface Props {
   children: React.ReactNode;
 }
 
-const Layout: NextPage<Props> = ({ children }) => {
-  return <ClerkProvider>{children}</ClerkProvider>;
+const PlatformLayout: NextPage<Props> = ({ children }) => {
+  return (
+    <ClerkProvider>
+      <Toaster />
+      {children}
+    </ClerkProvider>
+  );
 };
 
-export default Layout;
+export default PlatformLayout;
