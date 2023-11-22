@@ -1,5 +1,6 @@
 'use client';
 
+import { defaultImages } from '@/constants/images';
 import { unsplash } from '@/lib/unsplash';
 import { cn } from '@/lib/utils';
 import { Loader2 } from 'lucide-react';
@@ -14,7 +15,8 @@ interface FormPickerProps {
 
 export const FormPicker = ({ id, errors }: FormPickerProps) => {
   const { pending } = useFormStatus();
-  const [images, setImages] = useState<Array<Record<string, any>>>([]);
+  const [images, setImages] =
+    useState<Array<Record<string, any>>>(defaultImages);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedImageId, setSelectedImageId] = useState<string | null>(null);
 
@@ -40,7 +42,12 @@ export const FormPicker = ({ id, errors }: FormPickerProps) => {
       }
     };
 
-    fetchImages();
+    // Because of the Unsplash API rate limit, we set default image list
+    // If you want to use Unsplash API, please remove the defaultImages
+    // initial state and remove the following if statement
+    if (images.length === 0) {
+      fetchImages();
+    }
   }, []);
 
   if (isLoading) {
