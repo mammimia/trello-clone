@@ -3,7 +3,7 @@
 import { defaultImages } from '@/constants/images';
 import { unsplash } from '@/lib/unsplash';
 import { cn } from '@/lib/utils';
-import { Loader2 } from 'lucide-react';
+import { Check, Loader2 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
@@ -68,7 +68,7 @@ export const FormPicker = ({ id, errors }: FormPickerProps) => {
           <div
             key={image.id}
             className={cn(
-              'group relative aspect-video cursor-pointer bg-muted transition hover:opacity-75',
+              'group relative aspect-video h-16 cursor-pointer bg-muted transition hover:opacity-75',
               pending && 'cursor-auto opacity-50 hover:opacity-50'
             )}
             onClick={() => {
@@ -82,6 +82,14 @@ export const FormPicker = ({ id, errors }: FormPickerProps) => {
               src={image.urls.thumb}
               className="rounded-sm object-cover"
             />
+            {selectedImageId === image.id && (
+              <div
+                className="absolute inset-y-0 flex h-full w-full items-center
+               justify-center bg-black/30"
+              >
+                <Check className="h-4 w-4 text-white" />
+              </div>
+            )}
             <Link
               href={image.links.html}
               target="_blank"
