@@ -8,10 +8,11 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useFormStatus } from 'react-dom';
+import { FormErrors } from './form-errors';
 
 interface FormPickerProps {
   id: string;
-  errors?: Record<string, string[] | undefined>;
+  errors?: Record<string, string[]> | undefined;
 }
 
 export const FormPicker = ({ id, errors }: FormPickerProps) => {
@@ -76,6 +77,15 @@ export const FormPicker = ({ id, errors }: FormPickerProps) => {
               setSelectedImageId(image.id);
             }}
           >
+            <input
+              type="radio"
+              id={id}
+              name={id}
+              className="hidden"
+              checked={selectedImageId === image.id}
+              disabled={pending}
+              value={`${image.id}|${image.urls.thumb}|${image.urls.full}|${image.links.html}|${image.user.name}`}
+            />
             <Image
               fill
               alt="Image"
@@ -102,6 +112,7 @@ export const FormPicker = ({ id, errors }: FormPickerProps) => {
           </div>
         ))}
       </div>
+      <FormErrors errors={errors} id="image" />
     </div>
   );
 };
