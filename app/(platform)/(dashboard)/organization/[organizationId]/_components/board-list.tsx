@@ -1,8 +1,25 @@
 import { FormPopover } from '@/components/form/form-popover';
 import { Hint } from '@/components/hint';
+import { db } from '@/lib/db';
+import { auth } from '@clerk/nextjs';
 import { HelpCircle, User2 } from 'lucide-react';
+import Link from 'next/link';
+import { redirect } from 'next/navigation';
 
-export const BoardList = () => {
+export const BoardList = async () => {
+  const { orgId } = auth();
+
+  if (!orgId) return redirect('/select-organization');
+
+  const boards = await db.board.findMany({
+    where: {
+      orgId
+    },
+    orderBy: {
+      createdAt: 'desc'
+    }
+  });
+
   return (
     <div className="space-y-4">
       <div
@@ -16,6 +33,22 @@ export const BoardList = () => {
         className="grid grid-cols-2 gap-4 sm:grid-cols-3
        lg:grid-cols-4"
       >
+        {boards.map((board) => (
+          <Link
+            key={board.id}
+            href={`/board/${board.id}`}
+            className="group relative aspect-video h-full w-full 
+            overflow-hidden rounded-sm bg-sky-700 bg-cover bg-center
+            bg-no-repeat p-2"
+            style={{ backgroundImage: `url(${board.imageThumbUrl})` }}
+          >
+            <div
+              className="absolute inset-0 bg-black/30 transition 
+            group-hover:bg-black/40"
+            />
+            <p className="relative font-semibold text-white">{board.title}</p>
+          </Link>
+        ))}
         <FormPopover sideOffset={10} side="right">
           <div
             role="button"
