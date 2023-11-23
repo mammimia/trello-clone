@@ -19,8 +19,8 @@ export const BoardTitleForm = ({ board }: BoardTitleFormProps) => {
       setTitle(data.title);
       disableEditing();
     },
-    onError: () => {
-      toast.error(`Failed to update board "${board.title}"`);
+    onError: (error) => {
+      toast.error(error);
     }
   });
 
