@@ -1,6 +1,7 @@
 'use client';
 
 import { ListWithCards } from '@/types';
+import { ListForm } from './list-form';
 
 interface ListContainerProps {
   boardId: string;
@@ -8,5 +9,10 @@ interface ListContainerProps {
 }
 
 export const ListContainer = ({ boardId, lists }: ListContainerProps) => {
-  return <div>List Container</div>;
+  return (
+    <ol>
+      <ListForm />
+      <div className="w-1 flex-shrink-0"></div>
+    </ol>
+  );
 };
