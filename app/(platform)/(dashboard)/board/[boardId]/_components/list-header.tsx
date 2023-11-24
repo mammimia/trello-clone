@@ -39,7 +39,6 @@ export const ListHeader = ({ list }: ListHeaderProps) => {
   });
 
   const handleSubmit = (formData: FormData) => {
-    console.log('submitting');
     const title = formData.get('title') as string;
     const id = formData.get('id') as string;
     const boardId = formData.get('boardId') as string;
