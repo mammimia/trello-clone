@@ -6,6 +6,7 @@ import { List } from '@prisma/client';
 import { ElementRef, useRef, useState } from 'react';
 import { toast } from 'sonner';
 import { useEventListener } from 'usehooks-ts';
+import ListOptions from './list-options';
 
 interface ListHeaderProps {
   list: List;
@@ -92,6 +93,7 @@ export const ListHeader = ({ list }: ListHeaderProps) => {
           {title}
         </div>
       )}
+      <ListOptions list={list} onAddCard={() => {}} />
     </div>
   );
 };
