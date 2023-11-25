@@ -13,6 +13,7 @@ import { Separator } from '@/components/ui/separator';
 import { useAction } from '@/hooks/use-action';
 import { List } from '@prisma/client';
 import { MoreHorizontal, X } from 'lucide-react';
+import { ElementRef, useRef } from 'react';
 import { toast } from 'sonner';
 
 interface ListOptionsProps {
@@ -21,9 +22,12 @@ interface ListOptionsProps {
 }
 
 const ListOptions = ({ list, onAddCard }: ListOptionsProps) => {
+  const closeRef = useRef<ElementRef<'button'>>(null);
+
   const { execute: executeDelete } = useAction(deleteList, {
     onSuccess: (data) => {
       toast.success(`List ${data.title} deleted`);
+      closeRef.current?.click();
     },
     onError: (error) => {
       toast.error(error);
@@ -48,7 +52,7 @@ const ListOptions = ({ list, onAddCard }: ListOptionsProps) => {
         <div className="pb-4 text-center text-sm font-medium text-neutral-600">
           List actions
         </div>
-        <PopoverClose>
+        <PopoverClose ref={closeRef} asChild>
           <Button
             className="absolute right-2 top-2 h-auto w-auto p-2 text-neutral-600"
             variant="ghost"
