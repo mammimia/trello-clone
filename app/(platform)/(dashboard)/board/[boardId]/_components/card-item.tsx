@@ -7,5 +7,13 @@ interface CardItemProps {
 }
 
 export const CardItem = ({ card, index }: CardItemProps) => {
-  return <div>CardItem</div>;
+  return (
+    <div
+      role="button"
+      className="truncate rounded-md border-2 border-transparent
+     bg-white px-3 py-2 text-sm shadow-sm hover:border-black/50"
+    >
+      {card.title}
+    </div>
+  );
 };
