@@ -5,6 +5,10 @@ import { DragDropContext, Droppable } from '@hello-pangea/dnd';
 import { useEffect, useState } from 'react';
 import { ListForm } from './list-form';
 import { ListItem } from './list-item';
+import { useAction } from '@/hooks/use-action';
+import { updateListOrder } from '@/actions/update-list-order';
+import { toast } from 'sonner';
+import { List } from '@prisma/client';
 
 interface ListContainerProps {
   boardId: string;
@@ -20,6 +24,14 @@ function reorder<T>(list: T[], startIndex: number, endIndex: number) {
 
 export const ListContainer = ({ boardId, lists }: ListContainerProps) => {
   const [orderedLists, setOrderedLists] = useState(lists);
+  const { execute: executeUpdateListOrder } = useAction(updateListOrder, {
+    onSuccess: () => {
+      toast.success('List order updated successfully');
+    },
+    onError: (error) => {
+      toast.error(error);
+    }
+  });
 
   const onDragEnd = (result: any) => {
     const { source, destination, type } = result;
@@ -34,7 +46,14 @@ export const ListContainer = ({ boardId, lists }: ListContainerProps) => {
       return;
 
     if (type === 'list') {
-      return handleListMove(orderedLists, source, destination, setOrderedLists);
+      handleListMove(
+        orderedLists,
+        source,
+        destination,
+        boardId,
+        setOrderedLists,
+        executeUpdateListOrder
+      );
     }
 
     if (type == 'card') {
@@ -72,13 +91,18 @@ function handleListMove(
   orderedLists: ListWithCards[],
   source: any,
   destination: any,
-  setOrderedLists: (lists: ListWithCards[]) => void
+  boardId: string,
+  setOrderedLists: (lists: ListWithCards[]) => void,
+  executeUpdateListOrder: (data: { boardId: string; items: List[] }) => void
 ) {
   const newLists = reorder(orderedLists, source.index, destination.index).map(
     (item, index) => ({ ...item, order: index })
   );
   setOrderedLists(newLists);
-  return;
+  executeUpdateListOrder({
+    items: newLists,
+    boardId
+  });
 }
 
 function handleCardMove(
