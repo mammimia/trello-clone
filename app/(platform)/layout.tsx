@@ -1,4 +1,5 @@
 import { ModalProvider } from '@/components/providers/modal-provider';
+import { QueryProvider } from '@/components/providers/query-provider';
 import { ClerkProvider } from '@clerk/nextjs';
 import { NextPage } from 'next';
 import { Toaster } from 'sonner';
@@ -10,9 +11,11 @@ interface Props {
 const PlatformLayout: NextPage<Props> = ({ children }) => {
   return (
     <ClerkProvider>
-      <Toaster />
-      <ModalProvider />
-      {children}
+      <QueryProvider>
+        <Toaster />
+        <ModalProvider />
+        {children}
+      </QueryProvider>
     </ClerkProvider>
   );
 };
