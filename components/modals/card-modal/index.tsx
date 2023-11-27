@@ -6,6 +6,7 @@ import { fetcher } from '@/lib/fetcher';
 import { CardWithList } from '@/types';
 import { useQuery } from '@tanstack/react-query';
 import { Header } from './header';
+import { Description } from './description';
 
 export const CardModal = () => {
   const id = useCardModal((state) => state.id);
@@ -21,6 +22,17 @@ export const CardModal = () => {
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent>
         {!cardData ? <Header.Skeleton /> : <Header card={cardData} />}
+        <div className="grid-col-1 grid md:grid-cols-4 md:gap-4">
+          <div className="col-span-3">
+            <div className="w-full space-y-6">
+              {!cardData ? (
+                <Description.Skeleton />
+              ) : (
+                <Description card={cardData} />
+              )}
+            </div>
+          </div>
+        </div>
       </DialogContent>
     </Dialog>
   );
