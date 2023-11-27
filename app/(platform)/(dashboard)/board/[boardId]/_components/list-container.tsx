@@ -1,14 +1,15 @@
 'use client';
 
+import { updateCardOrder } from '@/actions/update-card-order';
+import { updateListOrder } from '@/actions/update-list-order';
+import { useAction } from '@/hooks/use-action';
 import { ListWithCards } from '@/types';
 import { DragDropContext, Droppable } from '@hello-pangea/dnd';
+import { Card, List } from '@prisma/client';
 import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
 import { ListForm } from './list-form';
 import { ListItem } from './list-item';
-import { useAction } from '@/hooks/use-action';
-import { updateListOrder } from '@/actions/update-list-order';
-import { toast } from 'sonner';
-import { List } from '@prisma/client';
 
 interface ListContainerProps {
   boardId: string;
@@ -27,6 +28,15 @@ export const ListContainer = ({ boardId, lists }: ListContainerProps) => {
   const { execute: executeUpdateListOrder } = useAction(updateListOrder, {
     onSuccess: () => {
       toast.success('List order updated successfully');
+    },
+    onError: (error) => {
+      toast.error(error);
+    }
+  });
+
+  const { execute: executeUpdateCardOrder } = useAction(updateCardOrder, {
+    onSuccess: () => {
+      toast.success('Card order updated successfully');
     },
     onError: (error) => {
       toast.error(error);
@@ -57,7 +67,14 @@ export const ListContainer = ({ boardId, lists }: ListContainerProps) => {
     }
 
     if (type == 'card') {
-      return handleCardMove(orderedLists, source, destination, setOrderedLists);
+      handleCardMove(
+        orderedLists,
+        source,
+        destination,
+        boardId,
+        setOrderedLists,
+        executeUpdateCardOrder
+      );
     }
   };
 
@@ -109,7 +126,9 @@ function handleCardMove(
   orderedLists: ListWithCards[],
   source: any,
   destination: any,
-  setOrderedLists: (lists: ListWithCards[]) => void
+  boardId: string,
+  setOrderedLists: (lists: ListWithCards[]) => void,
+  executeUpdateCardOrder: (data: { boardId: string; items: Card[] }) => void
 ) {
   const newOrderedList = [...orderedLists];
 
@@ -142,6 +161,10 @@ function handleCardMove(
   }
 
   setOrderedLists(newOrderedList);
+  executeUpdateCardOrder({
+    items: [...sourceList.cards, ...destinationList.cards],
+    boardId
+  });
 }
 function handleMoveCardInDifferentList(
   sourceList: ListWithCards,
