@@ -54,3 +54,30 @@ model Card {
 
   @@index([listId])
 }
+
+enum ACTION {
+  CREATE
+  UPDATE
+  DELETE
+}
+
+enum ENTITIY_TYPE {
+  BOARD
+  LIST
+  CARD
+}
+
+model AuditLog {
+  id                  String @id @default(uuid())
+  orgId               String
+  action              ACTION
+  entityType          ENTITIY_TYPE
+  entityId            String
+  entityTitle         String
+  userId              String
+  userImage           String @db.Text
+  userName            String @db.Text
+
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+}
