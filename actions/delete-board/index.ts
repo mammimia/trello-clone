@@ -1,8 +1,10 @@
 'use server';
 
+import { createAuditLog } from '@/lib/create-audit-log';
 import { createSafeAction } from '@/lib/create-safe-action';
 import { db } from '@/lib/db';
 import { auth } from '@clerk/nextjs';
+import { ACTION, ENTITIY_TYPE } from '@prisma/client';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { DeleteBoard } from './schema';
@@ -24,6 +26,13 @@ const handler = async (data: InputType): Promise<OutputType> => {
         id,
         orgId
       }
+    });
+
+    await createAuditLog({
+      entityTitle: board.title,
+      entityId: board.id,
+      entityType: ENTITIY_TYPE.BOARD,
+      action: ACTION.DELETE
     });
   } catch (error) {
     return { error: 'Failed to delete board!' };
