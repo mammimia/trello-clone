@@ -3,6 +3,7 @@
 import { createAuditLog } from '@/lib/create-audit-log';
 import { createSafeAction } from '@/lib/create-safe-action';
 import { db } from '@/lib/db';
+import { hasAvailableBoards, incrementAvailableBoards } from '@/lib/org-limit';
 import { auth } from '@clerk/nextjs';
 import { ACTION, ENTITIY_TYPE } from '@prisma/client';
 import { revalidatePath } from 'next/cache';
@@ -15,6 +16,15 @@ const handler = async (data: InputType): Promise<OutputType> => {
   if (!userId || !orgId) {
     return {
       error: 'Not authenticated'
+    };
+  }
+
+  const canCreateBoard = await hasAvailableBoards();
+
+  if (!canCreateBoard) {
+    return {
+      error:
+        'You have reached your limit of free boards. Please upgrade to create more.'
     };
   }
 
@@ -49,6 +59,8 @@ const handler = async (data: InputType): Promise<OutputType> => {
         imageUserName
       }
     });
+
+    await incrementAvailableBoards();
 
     await createAuditLog({
       entityTitle: board.title,

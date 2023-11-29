@@ -1,7 +1,9 @@
 import { FormPopover } from '@/components/form/form-popover';
 import { Hint } from '@/components/hint';
 import { Skeleton } from '@/components/ui/skeleton';
+import { MAX_FREE_BOARDS } from '@/constants/board';
 import { db } from '@/lib/db';
+import { getAvailableBoards } from '@/lib/org-limit';
 import { auth } from '@clerk/nextjs';
 import { HelpCircle, User2 } from 'lucide-react';
 import Link from 'next/link';
@@ -20,6 +22,8 @@ export const BoardList = async () => {
       createdAt: 'desc'
     }
   });
+
+  const availableBoardCount = await getAvailableBoards();
 
   return (
     <div className="space-y-4">
@@ -58,7 +62,9 @@ export const BoardList = async () => {
           rounded-sm bg-muted transition hover:opacity-75"
           >
             <p className="text-sm"> Create new board</p>
-            <span className="text-sm">5 remaining</span>
+            <span className="text-sm">
+              {MAX_FREE_BOARDS - availableBoardCount} remaining
+            </span>
             <Hint
               sideOffset={40}
               description={`Free workspaces can have up to 5 open boards. For unlimited boards upgrade this workspace.`}
