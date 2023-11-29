@@ -26,6 +26,7 @@ Create .env file in project directory. You need to fill variables below in that 
   NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=${AFTER_SIGN_UP_URL}
   DATABASE_URL=${DATABASE_URL}
   NEXT_PUBLIC_UNSPLASH_ACCESS_KEY=${NEXT_PUBLIC_UNSPLASH_ACCESS_KEY}
+  STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
 ```
 
 ## Installation
