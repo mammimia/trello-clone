@@ -27,6 +27,8 @@ Create .env file in project directory. You need to fill variables below in that 
   DATABASE_URL=${DATABASE_URL}
   NEXT_PUBLIC_UNSPLASH_ACCESS_KEY=${NEXT_PUBLIC_UNSPLASH_ACCESS_KEY}
   STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
+  STRIPE_WEBHOOK_SECRET=${STRIPE_WEBHOOK_SECRET} -> This will generated after forwarding event to webhook.
+  NEXT_PUBLIC_APP_URL=${NEXT_PUBLIC_APP_URL}
 ```
 
 ## Installation
@@ -35,6 +37,12 @@ To install this project follow the steps after cloning.
 
 ```bash
   npm install
+```
+
+Need to forward event to webhook.
+
+```bash
+  stripe listen --forward-to localhost:3000/api/webhooks
 ```
 
 Then to start app
