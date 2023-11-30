@@ -9,6 +9,7 @@ import { ACTION, ENTITIY_TYPE } from '@prisma/client';
 import { revalidatePath } from 'next/cache';
 import { CreateBoard } from './schema';
 import { InputType, OutputType } from './types';
+import { checkSubscription } from '@/lib/subscription';
 
 const handler = async (data: InputType): Promise<OutputType> => {
   const { userId, orgId } = auth();
@@ -20,8 +21,9 @@ const handler = async (data: InputType): Promise<OutputType> => {
   }
 
   const canCreateBoard = await hasAvailableBoards();
+  const isPro = await checkSubscription();
 
-  if (!canCreateBoard) {
+  if (!canCreateBoard && !isPro) {
     return {
       error:
         'You have reached your limit of free boards. Please upgrade to create more.'
@@ -60,7 +62,9 @@ const handler = async (data: InputType): Promise<OutputType> => {
       }
     });
 
-    await incrementAvailableBoards();
+    if (!isPro) {
+      await incrementAvailableBoards();
+    }
 
     await createAuditLog({
       entityTitle: board.title,

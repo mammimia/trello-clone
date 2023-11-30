@@ -10,6 +10,7 @@ import { redirect } from 'next/navigation';
 import { DeleteBoard } from './schema';
 import { InputType, OutputType } from './types';
 import { decreaseAvailableBoards } from '@/lib/org-limit';
+import { checkSubscription } from '@/lib/subscription';
 
 const handler = async (data: InputType): Promise<OutputType> => {
   const { userId, orgId } = auth();
@@ -17,6 +18,8 @@ const handler = async (data: InputType): Promise<OutputType> => {
   if (!userId || !orgId) {
     return { error: 'Not authenticated' };
   }
+
+  const isPro = await checkSubscription();
 
   const { id } = data;
   let board;
@@ -29,7 +32,9 @@ const handler = async (data: InputType): Promise<OutputType> => {
       }
     });
 
-    await decreaseAvailableBoards();
+    if (!isPro) {
+      await decreaseAvailableBoards();
+    }
 
     await createAuditLog({
       entityTitle: board.title,
